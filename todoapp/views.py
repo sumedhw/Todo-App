@@ -59,9 +59,9 @@ def user_registration(request):
                 messages.info(request, 'Email Taken')
                 return redirect('todoapp:user_registration')
             else:
-                user = User.objects.create_user(first_name = first_name , last_name = last_name , email= email , password = password1)
+                user = User.objects.create_user(first_name = first_name , last_name = last_name , username=user_name, email= email , password = password1)
                 user.save()
-                return redirect('todoapp:user_login')
+                return redirect('todoapp:login')
        else:
             return redirect('todoapp:user_registration')
         
@@ -72,7 +72,7 @@ def user_registration(request):
 
 def login(request):
     if request.method == "POST":
-        user_name = request.POST.get('user_name')
+        user_name = request.POST.get('username')
         password = request.POST.get('password')
 
         user = auth.authenticate(username=user_name , password = password)
@@ -87,7 +87,7 @@ def login(request):
         return render(request , 'todoapp/login.html')
 
 def logout(request):
-    auth.login(request)
+    auth.logout(request)
     return redirect('/')
 
     
