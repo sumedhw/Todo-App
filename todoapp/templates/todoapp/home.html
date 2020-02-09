@@ -1,0 +1,130 @@
+{% extends 'todoapp/main.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <button type="button" onclick="myFunction()" class="btn btn-primary">Add Task</button>
+</div>
+
+{% if messages %}
+<ul class="messages mt-2">
+    {% for msg in messages %}       
+    <li>
+        <div class="alert alert-{{msg.level_tag}}" role="alert">
+        {{msg.message}}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div id="myDIV" style="display: none;" >
+<form method="POST" action="{% url 'todoapp:store_task' %}">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="name" class="col-2 col-form-label">Name</label>
+      <div class="col-8">
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter task title">
+    </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="col-2 col-form-label" >Description</label>
+      <div class="col-8">
+      <input type="description" class="form-control" name="description" id="description" placeholder="Description">
+       </div>   
+    </div>
+    
+    <div class="form-group">
+        <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
+        <div class="col-8">
+          <input class="form-control" type="datetime-local" name="date" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+        </div>
+      </div>
+      <div class="form-group"> 
+        <div class="col-10 ml-1">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+    </div>
+  </form>
+</div>
+
+  <br>
+  <table class="table" hidden>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        
+      {% for task in tasks %}  
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{  task.name }}</td>
+        <td>{{  task.description }}</td>
+        <td>{{  task.date }}</td>
+        <td> <a href="{% url 'todoapp:delete_task' task.id %}"> <button type="button" class="btn btn-danger">Delete</button> </a> </td>    
+      </tr>
+      {% endfor %}
+      
+  
+    </tbody>
+  </table>
+    
+  <script>
+  
+  function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
+
+
+  </script>
+ 
+{% endblock %}
